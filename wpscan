@@ -1,0 +1,28 @@
+#!/usr/bin/bash
+
+
+## Created Directory for Remote Files 
+
+SCAN_PATH="/tmp/wpscan"
+
+if [ "SCAN_PATH" ];then
+	true
+else
+	mkdir /tmp/wpscan
+fi
+
+## Mount Remove Directory to Local Directory
+
+sshfs koosha@192.168.1.100:/srv/www /tmp/wpscan
+
+# Scan Direcoty With Linux Malware Detect
+
+maldet -a /tmp/wpscan
+
+# Scan Directory With ClamAV
+
+clamscan --infected --recursive --remove /tmp/wpscan
+
+# UnMount Mounted Directory
+
+fusermount -u /tmp/wpscan

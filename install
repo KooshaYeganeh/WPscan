@@ -57,6 +57,9 @@ if [ "$ubuntu" == "ubuntu" ];then
 
 	""" > /usr/local/maldetect/conf.maldet
 
+
+	sudo apt install sshfs -y
+
 	sclamscan="/usr/sbin/clamscan"
 	bclamscan="/usr/bin/clamscan"
 
@@ -125,6 +128,10 @@ elif [ "$fedora" == "fedora" ];then
 	scan_ignore_root='0'\n\n
 
 	""" > /usr/local/maldetect/conf.maldet
+	
+	sudo yum install epel-release -y
+	sudo yum makecache fast
+	sudo dnf install sshfs -y
 
 	sclamscan="/usr/sbin/clamscan"
 	bclamscan="/usr/bin/clamscan"
@@ -194,6 +201,9 @@ elif [ "$suse" == "suse" ];then
 	scan_ignore_root='0'\n\n
 
 	""" > /usr/local/maldetect/conf.maldet
+
+
+	sudo zypper -n install sshfs
 
 	sclamscan="/usr/sbin/clamscan"
 	bclamscan="/usr/bin/clamscan"

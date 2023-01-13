@@ -5,23 +5,35 @@
 
 SCAN_PATH="/tmp/wpscan"
 
-if [ "SCAN_PATH" ];then
+if [ -d "SCAN_PATH" ];then
 	true
 else
 	mkdir /tmp/wpscan
 fi
 
+
+printf "Enter Server Username : "
+read server_user
+
+printf "server_ip"
+read server_ip
+
+
+printf "Your WordPress Directory :"
+read wp_path
+
+
 ## Mount Remove Directory to Local Directory
 
-sshfs koosha@192.168.1.100:/srv/www /tmp/wpscan
+sshfs $server_user@$server_ip:$wp_path /tmp/wpscan
 
 # Scan Direcoty With Linux Malware Detect
 
-maldet -a /tmp/wpscan
+sudo maldet -a /tmp/wpscan
 
 # Scan Directory With ClamAV
 
-clamscan --infected --recursive --remove /tmp/wpscan
+sudo clamscan --infected --recursive --remove /tmp/wpscan
 
 # UnMount Mounted Directory
 

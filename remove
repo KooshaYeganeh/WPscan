@@ -1,0 +1,52 @@
+#!/bin/bash
+
+
+ubuntu=`cat /etc/os-release | grep -o "ubuntu" | head -1`
+fedora=`cat /etc/os-release | grep -o "fedora" | head -1`
+suse=`cat /etc/os-release | grep -o "suse" | head -1`
+rocky=`cat /etc/os-release | grep -o "Rocky" | head -1`
+
+
+
+
+if [ "$ubuntu" == "ubuntu" ];then
+
+
+	sudo apt remove  clamav clamav-daemon -y
+	sudo apt-get autoremove
+
+	sudo rm /usr/bin/maldet
+
+	sudo rm -rf /usr/local/maldetect/conf.maldet 
+
+
+elif [ "$fedora" == "fedora" ];then
+
+	sudo dnf remove clamav clamd clamav-update -y
+
+	sudo rm /usr/bin/maldet
+
+	sudo rm -rf /usr/local/maldetect/conf.maldet 
+
+
+elif [ "$suse" == "suse" ];then
+
+
+	sudo zypper remove pcre-devel clamav clamav-database clamav-nodb clamz
+
+	sudo rm /usr/bin/maldet
+
+	sudo rm -rf /usr/local/maldetect/conf.maldet 
+
+elif [ "$rocky" == "Rocky" ];then
+	sudo dnf remove -y clamav clamd clamav-update
+
+	sudo rm /usr/bin/maldet
+
+	sudo rm -rf /usr/local/maldetect/conf.maldet 
+else
+	echo "Your Distro Not Supported !!!"
+
+fi
+
+

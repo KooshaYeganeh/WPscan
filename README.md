@@ -9,6 +9,7 @@ Note: Your WordPress files may be deleted because they are malicious
 
 # Install
 
+**Note : Run This Script with sudo**
 
 ```
 ./install
@@ -26,6 +27,8 @@ wpscan
 
 # Remove
 
+
+**Note : Run This Script with sudo**
 
 ```
 ./remove

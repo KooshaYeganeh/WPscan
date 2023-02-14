@@ -9,14 +9,17 @@ rocky=`cat /etc/os-release | grep -o "Rocky" | head -1`
 
 
 if [ "$ubuntu" == "ubuntu" ];then
-	sudo apt update 
-	sudo apt install clamav clamav-daemon -y
-	echo "clamAV installed on Ubuntu"
-	sudo systemctl stop clamav-freshclam
-	sudo freshclam
-	sudo systemctl start clamav-freshclam
-	echo "clamAV Database Downloaded"
-
+	if [ -f "/usr/bin/clamscan" ] || [ -f "/usr/sbin/clamscan" ];then
+		echo "clamAV is already installed on the system [ OK ]"
+	else
+		sudo apt update
+		sudo apt install clamav clamav-daemon -y
+		echo "clamAV installed on Ubuntu"
+		sudo systemctl stop clamav-freshclam
+		sudo freshclam
+		sudo systemctl start clamav-freshclam
+		echo "clamAV Database Downloaded"
+	fi
 	sudo apt update 
 	sudo apt install wget -y
 	cd /tmp/ 
@@ -82,14 +85,19 @@ if [ "$ubuntu" == "ubuntu" ];then
 
 elif [ "$fedora" == "fedora" ];then
 
-	sudo dnf upgrade --refresh
-	sudo dnf install clamav clamd clamav-update -y
-	echo "clamAV installed"
-	sudo freshclam
-	sudo systemctl enable --now clamav-freshclam
-	echo "ClamAV Database Updated"
+	if [ -f "/usr/bin/clamscan" ] || [ -f "/usr/sbin/clamscan" ];then
+		echo "clamAV is already installed on the system [ OK ]"
+	else
+		sudo dnf upgrade --refresh
+		sudo dnf install clamav clamd clamav-update -y
+		echo "clamAV installed"
+		sudo freshclam
+		sudo systemctl enable --now clamav-freshclam
+		echo "ClamAV Database Updated"
 	
-	
+
+	fi
+		
 	sudo dnf install wget -y
 	cd /tmp/ 
 	wget http://www.rfxn.com/downloads/maldetect-current.tar.gz
@@ -158,10 +166,16 @@ elif [ "$fedora" == "fedora" ];then
 elif [ "$suse" == "suse" ];then
 	
 	# clamAV
-	sudo zypper install pcre-devel clamav clamav-database clamav-nodb clamz
-	echo "(1/4) .......... clamAV Installed"
-	sudo systemctl  stop freshcalam
-	sudo freshclam
+	
+	if [ -f "/usr/bin/clamscan" ] || [ -f "/usr/sbin/clamscan" ];then
+		sudo zypper install pcre-devel clamav clamav-database clamav-nodb clamz
+		echo "(1/4) .......... clamAV Installed"
+		sudo systemctl  stop freshcalam
+		sudo freshclam
+	else
+		echo "Antivirus software is already installed on the system [ OK ]"
+	fi
+
 
 	sudo zypper install wget -y
 	cd /tmp/ 
@@ -228,13 +242,22 @@ elif [ "$suse" == "suse" ];then
 
 
 elif [ "$rocky" == "Rocky" ];then
-	dnf install epel-release
-	dnf install -y clamav clamd clamav-update
-	echo "clamAV installed"
-	systemctl stop clamav-freshclam
-	sudo freshclam
-	sudo systemctl enable --now clamav-freshclam
-	echo "ClamAV Database Updated"
+	
+	if [ -f "/usr/bin/clamscan" ] || [ -f "/usr/sbin/clamscan" ];then
+		sudo dnf install epel-release
+		sudo dnf install -y clamav clamd clamav-update
+		echo "clamAV installed"
+		sudo systemctl stop clamav-freshclam
+		sudo freshclam
+		sudo systemctl enable --now clamav-freshclam
+		echo "ClamAV Database Updated"
+
+	else
+		echo "Antivirus software is already installed on the system [ OK ]"
+	fi
+
+
+	
 	
 	
 	sudo dnf install wget -y
